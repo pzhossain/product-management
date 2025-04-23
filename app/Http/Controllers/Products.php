@@ -34,7 +34,7 @@ class Products extends Controller
         $product= Product::find($id);
 
         if (!$product){
-            return response()->json(['massage'=>'No product found']);
+            return response()->json(['massage'=>'No product found by this ID. Enter a valid one.']);
         }
         return $product;
     }
@@ -47,14 +47,13 @@ class Products extends Controller
      $product= Product::find($id);
 
         if (!$product) {
-        return response()->json(['message' => 'Product not found']);
+        return response()->json(['message' => 'Product ID not valid.']);
         }
-
         
         $product->name= $request->name;
         $product->description = $request->description;
         $product->price = $request->price;
-        $product->stock = $request->stock;
+        $product->stock = $request->stock;       
         $product->save();
 
         return response()->json(['message' => 'Product update successful', 'data' => $product]);
@@ -64,23 +63,16 @@ class Products extends Controller
     // Function for delete a single data by it's ID.
 
     public function destroy($id){
+
+        $product=Product::find($id);
+
+        if(!$product){
+            return response()->json(['massage'=> 'Nothing found. Please Enter a Valid ID']);
+        }
+        
         Product::destroy($id);
 
         return response()->json(['massage'=> 'Product delete successful']);
-    }
-
-
-
-    // public function update(){
-    //     Product::where('id',7)->update([
-    //         'name'=>'update',
-    //         'description'=>'description',
-    //         'price'=>'100',
-    //         'stock'=>'50',
-    //     ]);
-    //     return response()->json([
-    //             'message' => 'Product update successful'
-    //         ]);
-    // }
+    }   
 
 }
